@@ -295,9 +295,63 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
     </select>
     <input type="tel" placeholder="Teléfono (opcional)" />
     <textarea placeholder="Cuéntanos sobre tu situación actual..."></textarea>
-    <button class="btn-solid" style="padding:12px;font-size:15px">Enviar mensaje</button>
+    <button class="btn-solid" id="btn-pagar" style="padding:12px;font-size:15px" onclick="iniciarPago()">Comenzar ahora</button>
+    <div id="msg-pago" style="font-size:13px;text-align:center;margin-top:8px"></div>
   </div>
 </div>
+
+<script>
+const SISTEMA_URL = "https://sistema-contable-production-2a9f.up.railway.app";
+
+const PLANES = {
+  "Hasta 10": "starter",
+  "11 – 20": "pro",
+  "21 – 40": "business",
+  "41 o más": "enterprise"
+};
+
+async function iniciarPago() {
+  const nombre = document.querySelector('input[placeholder="Tu nombre"]').value.trim();
+  const email = document.querySelector('input[placeholder="nombre@correo.com"]').value.trim();
+  const planLabel = document.querySelector('select').value;
+  const plan = PLANES[planLabel];
+
+  const msg = document.getElementById('msg-pago');
+  const btn = document.getElementById('btn-pagar');
+
+  if (!nombre || !email || !plan) {
+    msg.style.color = '#c0392b';
+    msg.textContent = 'Por favor completa tu nombre, email y plan.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Procesando...';
+  msg.style.color = '#4a6355';
+  msg.textContent = 'Creando orden de pago...';
+
+  try {
+    const resp = await fetch(`${SISTEMA_URL}/suscripcion/iniciar`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email, plan, es_lanzamiento: true })
+    });
+    const data = await resp.json();
+    if (data.url_pago) {
+      msg.style.color = '#1B6B45';
+      msg.textContent = 'Redirigiendo a Flow...';
+      window.location.href = data.url_pago;
+    } else {
+      throw new Error(data.error || 'Error desconocido');
+    }
+  } catch (e) {
+    msg.style.color = '#c0392b';
+    msg.textContent = 'Error: ' + e.message;
+    btn.disabled = false;
+    btn.textContent = 'Comenzar ahora';
+  }
+}
+</script>
 
 <footer>
   <div class="footer-col">
