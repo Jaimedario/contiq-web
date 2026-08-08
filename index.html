@@ -19,6 +19,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .btn-outline{background:#fff;color:#1B6B45;padding:9px 20px;border-radius:7px;font-size:14px;border:1.5px solid #1B6B45;cursor:pointer;font-family:inherit;text-decoration:none}
 .btn-solid{background:#1B6B45;color:#fff;padding:9px 20px;border-radius:7px;font-size:14px;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .btn-solid:hover{background:#0F4A2F}
+.btn-solid:disabled{background:#9BBFAC;cursor:not-allowed}
+.btn-solid:disabled:hover{background:#9BBFAC}
 .hero{background:#0F3D28;padding:5rem 3rem 0;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;min-height:420px}
 .hero-left{padding-bottom:3rem}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(192,232,210,0.15);border:1px solid rgba(192,232,210,0.3);color:#C0E8D2;font-size:12px;padding:5px 14px;border-radius:20px;margin-bottom:1.25rem}
@@ -97,6 +99,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .contact-wrap{max-width:480px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
 .contact-wrap input,.contact-wrap textarea,.contact-wrap select{width:100%;padding:11px 14px;border-radius:8px;border:1px solid #C0E8D2;background:#fff;font-family:inherit;font-size:14px;color:#1C2B22}
 .contact-wrap textarea{height:100px;resize:vertical}
+.pago-modo{display:flex;flex-direction:column;gap:10px}
+.pago-modo-opt{display:flex;align-items:center;gap:10px;border:1px solid #C0E8D2;border-radius:8px;padding:11px 14px;cursor:pointer;font-size:14px;color:#1C2B22;background:#fff;transition:border-color .15s,background .15s}
+.pago-modo-opt.sel{border-color:#1B6B45;background:#EAF5EE}
+.pago-modo-opt input{accent-color:#1B6B45}
+.pago-modo-label{flex:1}
+.pago-modo-opt .plan-badge{margin-bottom:0}
 footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem}
 .footer-logo{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px}
 .footer-col h4{font-size:12px;font-weight:600;color:#5DCAA5;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.05em}
@@ -293,6 +301,17 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
       <option>21 – 40</option>
       <option>41 o más</option>
     </select>
+    <div class="pago-modo">
+      <label class="pago-modo-opt sel" id="opt-modo-manual">
+        <input type="radio" name="modo-pago" value="manual" checked onchange="actualizarModoPago()" />
+        <span class="pago-modo-label">💳 Pago mensual manual</span>
+      </label>
+      <label class="pago-modo-opt" id="opt-modo-automatico">
+        <input type="radio" name="modo-pago" value="automatico" onchange="actualizarModoPago()" />
+        <span class="pago-modo-label">🔄 Pago automático (débito automático)</span>
+        <span class="plan-badge">Próximamente</span>
+      </label>
+    </div>
     <input type="tel" placeholder="Teléfono (opcional)" />
     <textarea placeholder="Cuéntanos sobre tu situación actual..."></textarea>
     <button class="btn-solid" id="btn-pagar" style="padding:12px;font-size:15px" onclick="iniciarPago()">Comenzar ahora</button>
@@ -302,6 +321,22 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
 
 <script>
 const SISTEMA_URL = "https://sistema-contable-production-2a9f.up.railway.app";
+
+function actualizarModoPago() {
+  const automatico = document.querySelector('input[name="modo-pago"]:checked').value === 'automatico';
+  document.getElementById('opt-modo-manual').classList.toggle('sel', !automatico);
+  document.getElementById('opt-modo-automatico').classList.toggle('sel', automatico);
+
+  const btn = document.getElementById('btn-pagar');
+  const msg = document.getElementById('msg-pago');
+  btn.disabled = automatico;
+  if (automatico) {
+    msg.style.color = '#4a6355';
+    msg.textContent = 'Esta opción estará disponible pronto. Por ahora puedes contratar con pago mensual manual.';
+  } else {
+    msg.textContent = '';
+  }
+}
 
 const PLANES = {
   "Hasta 10": "starter",
