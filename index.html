@@ -80,6 +80,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .plan-price{font-size:26px;font-weight:600;color:#1C2B22}
 .plan-iva{font-size:11px;color:#4a6355}
 .promo{background:#EAF5EE;border:1px solid #C0E8D2;border-radius:8px;padding:12px 16px;text-align:center;font-size:13px;color:#0F4A2F;max-width:760px;margin:0 auto}
+.cupos-info{margin:10px auto 0;text-align:center;font-size:13px;font-weight:600;color:#1B6B45}
+.cupos-info.urgente{color:#c0392b}
 .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:760px;margin:0 auto}
 .testi{background:#fff;border:1px solid #C0E8D2;border-radius:12px;padding:1.25rem}
 .testi-stars{color:#1B6B45;font-size:14px;margin-bottom:8px}
@@ -253,7 +255,8 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
     </div>
   </div>
   <br>
-  <div class="promo">🎁 30% de descuento para los primeros 20 clientes — oferta de lanzamiento por tiempo limitado</div>
+  <div class="promo" id="promo-lanzamiento">🎁 30% de descuento para los primeros 20 clientes — oferta de lanzamiento por tiempo limitado</div>
+  <div class="cupos-info" id="cupos-info"></div>
 </div>
 
 <div class="sec sec-center" id="testimonios">
@@ -321,6 +324,37 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
 
 <script>
 const SISTEMA_URL = "https://sistema-contable-production-2a9f.up.railway.app";
+
+async function cargarCuposLanzamiento() {
+  const cuposEl = document.getElementById('cupos-info');
+  try {
+    const resp = await fetch(`${SISTEMA_URL}/cupos-lanzamiento`);
+    const data = await resp.json();
+    const disponibles = data.disponibles;
+
+    if (disponibles <= 0) {
+      document.getElementById('promo-lanzamiento').style.display = 'none';
+      cuposEl.style.display = 'none';
+      document.querySelectorAll('#precios .plan').forEach(plan => {
+        const precioViejo = plan.querySelector('.plan-old');
+        const precioActual = plan.querySelector('.plan-price');
+        const iva = plan.querySelector('.plan-iva');
+        if (precioViejo && precioActual) {
+          precioActual.textContent = precioViejo.textContent;
+          precioViejo.style.display = 'none';
+        }
+        if (iva) iva.textContent = '+ IVA';
+      });
+      return;
+    }
+
+    cuposEl.textContent = `🔥 Quedan ${disponibles} / ${data.total} cupos con descuento`;
+    cuposEl.classList.toggle('urgente', disponibles <= 5);
+  } catch (e) {
+    cuposEl.style.display = 'none';
+  }
+}
+cargarCuposLanzamiento();
 
 function actualizarModoPago() {
   const automatico = document.querySelector('input[name="modo-pago"]:checked').value === 'automatico';
