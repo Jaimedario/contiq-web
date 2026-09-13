@@ -296,6 +296,19 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
   </div>
 </div>
 
+<div class="sec sec-center" id="escribenos">
+  <h2>¿Tienes una consulta?</h2>
+  <p class="sec-sub">Escríbenos directamente y te respondemos a la brevedad</p>
+  <div class="contact-wrap">
+    <div id="contacto-msg" style="display:none;padding:10px 14px;border-radius:8px;font-size:13px;text-align:center"></div>
+    <input type="text" id="ct-nombre" placeholder="Tu nombre" required />
+    <input type="email" id="ct-email" placeholder="nombre@correo.com" required />
+    <input type="text" id="ct-asunto" placeholder="Asunto" required />
+    <textarea id="ct-mensaje" placeholder="Escribe tu mensaje..." required></textarea>
+    <button class="btn-solid" id="btn-contacto" style="padding:12px;font-size:15px" onclick="enviarContacto()">Enviar mensaje</button>
+  </div>
+</div>
+
 <div class="sec sec-center" id="blog">
   <h2>Blog tributario</h2>
   <p class="sec-sub">Novedades SII, tips contables y actualizaciones del sistema</p>
@@ -455,6 +468,55 @@ async function iniciarPago() {
     btn.textContent = 'Comenzar ahora';
   }
 }
+
+async function enviarContacto() {
+  const nombre = document.getElementById('ct-nombre').value.trim();
+  const email = document.getElementById('ct-email').value.trim();
+  const asunto = document.getElementById('ct-asunto').value.trim();
+  const mensaje = document.getElementById('ct-mensaje').value.trim();
+  const msg = document.getElementById('contacto-msg');
+  const btn = document.getElementById('btn-contacto');
+
+  if (!nombre || !email || !asunto || !mensaje) {
+    msg.style.display = 'block';
+    msg.style.background = '#fdecea';
+    msg.style.color = '#c0392b';
+    msg.textContent = 'Por favor completa todos los campos.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  msg.style.display = 'block';
+  msg.style.background = '#EAF5EE';
+  msg.style.color = '#4a6355';
+  msg.textContent = 'Enviando tu mensaje...';
+
+  try {
+    const resp = await fetch('/api/contacto', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nombre, email, asunto, mensaje })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'No se pudo enviar el mensaje');
+
+    msg.style.background = '#EAF5EE';
+    msg.style.color = '#1B6B45';
+    msg.textContent = '¡Mensaje enviado! Te responderemos a la brevedad.';
+    document.getElementById('ct-nombre').value = '';
+    document.getElementById('ct-email').value = '';
+    document.getElementById('ct-asunto').value = '';
+    document.getElementById('ct-mensaje').value = '';
+  } catch (e) {
+    msg.style.background = '#fdecea';
+    msg.style.color = '#c0392b';
+    msg.textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enviar mensaje';
+  }
+}
 </script>
 
 <footer>
@@ -476,6 +538,7 @@ async function iniciarPago() {
   </div>
   <div class="footer-col">
     <h4>Contacto</h4>
+    <a href="#escribenos">Escríbenos</a>
     <p>contacto@contiq.cl</p>
     <p>+56 9 64848378</p>
   </div>
