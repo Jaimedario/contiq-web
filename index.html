@@ -578,5 +578,39 @@ async function enviarContacto() {
 </footer>
 <div class="footer-copy">© 2026 ContIQ · Rialsoft Limitada · Todos los derechos reservados</div>
 
+
+<!-- Chat flotante de Sofía -->
+<style>
+#sofia-btn{position:fixed;right:20px;bottom:20px;width:58px;height:58px;border-radius:50%;background:#1B6B45;color:#fff;border:none;font-size:26px;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3);z-index:9999;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .15s}
+#sofia-btn:hover{background:#0F4A2F;transform:scale(1.06)}
+#sofia-panel{position:fixed;right:20px;bottom:90px;width:380px;height:560px;max-width:calc(100vw - 24px);max-height:calc(100vh - 110px);background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.35);overflow:hidden;z-index:9999;display:none;flex-direction:column}
+#sofia-panel.open{display:flex}
+#sofia-head{background:#0F4A2F;color:#fff;padding:10px 14px;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+#sofia-close{background:none;border:none;color:#C0E8D2;font-size:20px;cursor:pointer;line-height:1}
+#sofia-frame{flex:1;width:100%;border:0}
+@media(max-width:480px){#sofia-panel{right:12px;left:12px;width:auto;bottom:84px}}
+</style>
+<button id="sofia-btn" aria-label="Abrir chat con Sofía" title="Chatea con Sofía">💬</button>
+<div id="sofia-panel" role="dialog" aria-label="Chat con Sofía">
+  <div id="sofia-head"><span>Sofía · ContIQ</span><button id="sofia-close" aria-label="Cerrar chat">×</button></div>
+</div>
+<script>
+(function(){
+  var URL_SOFIA='https://sofia-contiq-production.up.railway.app';
+  var btn=document.getElementById('sofia-btn'),panel=document.getElementById('sofia-panel'),frame=null;
+  function toggle(open){
+    if(open&&!frame){
+      frame=document.createElement('iframe');
+      frame.id='sofia-frame';frame.src=URL_SOFIA;frame.title='Sofía, asistente de ContIQ';
+      frame.allow='microphone';
+      panel.appendChild(frame);
+    }
+    panel.classList.toggle('open',open);
+    btn.textContent=open?'✕':'💬';
+  }
+  btn.addEventListener('click',function(){toggle(!panel.classList.contains('open'));});
+  document.getElementById('sofia-close').addEventListener('click',function(){toggle(false);});
+})();
+</script>
 </body>
 </html>
