@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ContIQ — Software contable chileno con inteligencia artificial</title>
+<meta property="og:image" content="https://contiq.cl/img/icono-contiq-512.png">
 <meta name="description" content="Gestiona todos tus contribuyentes desde un solo sistema. 30 minutos por cliente, informes cuadrados en 2 minutos, F29 con solo 3 datos.">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -11,7 +12,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .topbar{background:#0F4A2F;padding:8px 2rem;display:flex;justify-content:flex-end;align-items:center;gap:1.5rem}
 .topbar a{font-size:13px;color:#C0E8D2;text-decoration:none;display:flex;align-items:center;gap:5px}
 .navbar{background:#fff;border-bottom:1px solid #e0ede7;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100}
-.logo{font-size:22px;font-weight:600;color:#1B6B45;letter-spacing:-0.5px}
+.logo{display:flex;align-items:center;text-decoration:none}
+.logo img{height:42px;width:auto;display:block}
+.footer-logo img{height:40px;width:auto;display:block}
 .nav-links{display:flex;gap:1.75rem;align-items:center}
 .nav-links a{font-size:14px;color:#2d3d35;text-decoration:none}
 .nav-links a:hover{color:#1B6B45}
@@ -121,9 +124,13 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
   .hero{grid-template-columns:1fr;padding:3rem 1.5rem 0}
   .hero-right{display:none}
   .nav-links{display:none}
-  .navbar{padding:0 1rem}
+  .navbar{padding:0 1rem;gap:.75rem}
+  .logo img{height:30px}
 }
 </style>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="/img/icono-contiq-512.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 </head>
 <body>
 
@@ -134,7 +141,7 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
 </div>
 
 <nav class="navbar">
-  <div class="logo">ContIQ</div>
+  <a href="/" class="logo"><img src="/img/logo-contiq.png" alt="ContIQ" width="147" height="42"></a>
   <div class="nav-links">
     <a href="#funcionalidades">Software</a>
     <a href="#precios">Precios</a>
@@ -554,7 +561,7 @@ async function enviarContacto() {
 
 <footer>
   <div class="footer-col">
-    <div class="footer-logo">ContIQ</div>
+    <div class="footer-logo"><img src="/img/logo-contiq-blanco.png" alt="ContIQ" width="140" height="40"></div>
     <p>Software contable chileno con inteligencia artificial para contadores y empresas.</p>
   </div>
   <div class="footer-col">
