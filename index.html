@@ -113,7 +113,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .pago-modo-opt{display:flex;align-items:center;gap:10px;border:1px solid #C0E8D2;border-radius:8px;padding:11px 14px;cursor:pointer;font-size:14px;color:#1C2B22;background:#fff;transition:border-color .15s,background .15s}
 .pago-modo-opt.sel{border-color:#1B6B45;background:#EAF5EE}
 .pago-modo-opt input{accent-color:#1B6B45}
-.pago-modo-label{flex:1}
+.contact-wrap .pago-modo-opt input{width:auto;flex:none;margin:0;padding:0}
+.pago-modo-label{flex:1;text-align:left}
 .pago-modo-opt .plan-badge{margin-bottom:0}
 footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2rem}
 .footer-logo{font-size:22px;font-weight:700;color:#fff;margin-bottom:8px}
@@ -330,9 +331,9 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
   <h2>¿Listo para empezar?</h2>
   <p class="sec-sub">Escríbenos y te mostramos el sistema en una llamada sin compromiso</p>
   <div class="contact-wrap">
-    <input type="text" placeholder="Tu nombre" required />
-    <input type="email" placeholder="nombre@correo.com" required />
-    <select>
+    <input type="text" id="sus-nombre" placeholder="Tu nombre" required />
+    <input type="email" id="sus-email" placeholder="nombre@correo.com" required />
+    <select id="sus-plan">
       <option value="">¿Cuántos contribuyentes gestionas?</option>
       <option>Hasta 10</option>
       <option>11 – 20</option>
@@ -468,9 +469,9 @@ const PLANES = {
 };
 
 async function iniciarPago() {
-  const nombre = document.querySelector('input[placeholder="Tu nombre"]').value.trim();
-  const email = document.querySelector('input[placeholder="nombre@correo.com"]').value.trim();
-  const planLabel = document.querySelector('select').value;
+  const nombre = document.getElementById('sus-nombre').value.trim();
+  const email = document.getElementById('sus-email').value.trim();
+  const planLabel = document.getElementById('sus-plan').value;
   const plan = PLANES[planLabel];
 
   const msg = document.getElementById('msg-pago');
