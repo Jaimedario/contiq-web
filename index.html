@@ -571,6 +571,7 @@ async function enviarContacto() {
       frame.allow='microphone';
       panel.appendChild(frame);
     }
+    if(!open&&frame)frame.contentWindow.postMessage('sofia-silencio',URL_SOFIA);
     panel.classList.toggle('open',open);
     btn.textContent=open?'✕':'💬';
   }
