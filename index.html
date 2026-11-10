@@ -26,9 +26,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1
 .btn-solid:disabled:hover{background:#9BBFAC}
 .hero{background:#0F3D28;padding:5rem 3rem 0;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:end;min-height:420px}
 .hero-left{padding-bottom:3rem}
-.hero h1{font-size:34px;font-weight:600;line-height:1.2;color:#fff;margin-bottom:1rem}
+.hero h1{font-size:32px;font-weight:600;line-height:1.2;color:#fff;margin-bottom:1rem}
 .hero h1 em{font-style:normal;color:#5DCAA5}
 .hero p{font-size:15px;color:#9fcfb8;line-height:1.65;margin-bottom:1.75rem;max-width:420px}
+.hero p.hero-sub{margin-bottom:1rem}
+.hero-list{list-style:none;margin:0 0 1rem;padding:0;max-width:460px}
+.hero-list li{position:relative;padding-left:1.4rem;font-size:15px;color:#9fcfb8;line-height:1.55;margin-bottom:.45rem}
+.hero-list li::before{content:"✓";position:absolute;left:0;color:#5DCAA5;font-weight:600}
+.hero-list strong{color:#fff;font-weight:600}
 .hero-ctas{display:flex;gap:10px;flex-wrap:wrap}
 .btn-hero-p{background:#1B6B45;color:#fff;padding:12px 24px;border-radius:8px;font-size:15px;border:none;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-block}
 .btn-hero-p:hover{background:#0F4A2F}
@@ -119,6 +124,7 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
 @media(max-width:768px){
   .hero{grid-template-columns:1fr;padding:3rem 1.5rem 0}
   .hero-right{display:none}
+  .hero h1{font-size:26px}
   .nav-links{display:none}
   .navbar{padding:0 1rem;gap:.75rem}
   .logo img{height:30px}
@@ -152,8 +158,15 @@ footer{background:#0B3320;padding:3rem 2rem;display:grid;grid-template-columns:r
 
 <div class="hero">
   <div class="hero-left">
-    <h1>Contabilidad chilena <em>automatizada</em> con inteligencia artificial</h1>
-    <p>Gestiona todos tus contribuyentes desde un solo sistema. 30 minutos por cliente, informes cuadrados en 2 minutos, F29 con solo 3 datos.</p>
+    <h1>Contabilidad y remuneraciones chilenas <em>automatizadas</em> con inteligencia artificial</h1>
+    <p class="hero-sub">Gestiona todos tus contribuyentes y sus remuneraciones desde una sola plataforma.</p>
+    <ul class="hero-list">
+      <li><strong>Contabilidad automatizada:</strong> solo 10 minutos por cliente.</li>
+      <li><strong>Informes contables:</strong> cuadrados y listos en 2 minutos.</li>
+      <li><strong>Formulario F29:</strong> preparado con solo 3 datos.</li>
+      <li><strong>Remuneraciones:</strong> automatiza hasta el 87% del proceso de cálculo y gestión de sueldos.</li>
+    </ul>
+    <p>Menos trabajo operativo, más productividad y más clientes para tu estudio contable.</p>
     <div class="hero-ctas">
       <a href="#contacto" class="btn-hero-p">Comenzar ahora</a>
       <a href="#demo" class="btn-hero-s" onclick="mostrarDemo(event)">Ver demo</a>
